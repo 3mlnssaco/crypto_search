@@ -1,5 +1,4 @@
 import 'dart:convert'; // JSON 인코딩 및 디코딩을 위한 패키지
-import 'package:flutter/services.dart' show rootBundle; // 리소스 로드를 위한 패키지
 import 'package:http/http.dart' as http; // HTTP 요청을 위한 패키지
 
 class CryptoService {
@@ -7,8 +6,13 @@ class CryptoService {
 
   // 코인 데이터를 가져오는 메서드
   Future<List<dynamic>> fetchAllCoins() async {
-    final response = await http.get(Uri.parse(
-        'https://api.binance.com/api/v3/ticker/price')); // Binance API에서 코인 데이터를 가져옴
+    final apiKey = const String.fromEnvironment('BINANCE_API_KEY');
+    final response = await http.get(
+      Uri.parse('https://api.binance.com/api/v3/ticker/price'),
+      headers: {
+        'X-MBX-APIKEY': apiKey,
+      },
+    ); // Binance API에서 코인 데이터를 가져옴
 
     if (response.statusCode == 200) {
       List<dynamic> coins = jsonDecode(response.body); // 응답 데이터를 JSON 형식으로 디코딩
@@ -33,39 +37,5 @@ class CryptoService {
   // 즐겨찾기 목록 가져오는 메서드
   List<Map<String, dynamic>> getFavoriteCoins() {
     return favoriteCoins; // 즐겨찾기 코인 리스트 반환
-  }
-
-  // API 키 로드 메서드
-  static Future<String> loadApiKey() async {
-    try {
-      final jsonStr = await rootBundle.loadString(
-          'assets/config.json'); // assets/config.json 파일에서 API 키를 로드
-      final jsonMap = jsonDecode(jsonStr); // 로드된 JSON 문자열을 디코딩하여 맵 형식으로 변환
-      return jsonMap['BINANCE_API_KEY'] ??
-          (throw Exception('API key not found')); // API 키가 존재하면 반환, 없으면 예외 발생
-    } catch (e) {
-      throw Exception('Failed to load API key: $e'); // API 키 로드 실패 시 예외 발생
-    }
-  }
-
-  // 시크릿 키 로드 메서드
-  static Future<String> loadSecretKey() async {
-    try {
-      final jsonStr = await rootBundle.loadString(
-          'assets/config.json'); // assets/config.json 파일에서 시크릿 키를 로드
-      final jsonMap = jsonDecode(jsonStr); // 로드된 JSON 문자열을 디코딩하여 맵 형식으로 변환
-      return jsonMap['BINANCE_SECRET_KEY'] ??
-          (throw Exception(
-              'Secret key not found')); // 시크릿 키가 존재하면 반환, 없으면 예외 발생
-    } catch (e) {
-      throw Exception('Failed to load secret key: $e'); // 시크릿 키 로드 실패 시 예외 발생
-    }
-  }
-
-  // 초기화 메서드
-  Future<void> initialize() async {
-    final apiKey = await loadApiKey(); // API 키 로드
-    final secretKey = await loadSecretKey(); // 시크릿 키 로드
-    // 로드된 키 사용
   }
 }
