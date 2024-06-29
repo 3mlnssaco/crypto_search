@@ -4,8 +4,7 @@ buildscript {
         google() // Google Maven repository
         mavenCentral() // Maven Central repository
     }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.2' // Update to a newer version
+    // Update to a newer version
         // Add other classpaths if necessary
     }
 }
