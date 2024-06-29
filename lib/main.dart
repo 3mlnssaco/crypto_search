@@ -7,7 +7,7 @@ import 'search_coins.dart'; // SearchCoins 클래스를 가져오기 위한 패�
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Flutter 위젯 바인딩 초기화
   final cryptoService = CryptoService(); // CryptoService 인스턴스 생성
-  await cryptoService.initialize(); // CryptoService 초기화
+  cryptoService.initialize(); // CryptoService 초기화
   runApp(MyApp(cryptoService: cryptoService)); // MyApp 실행
 }
 
@@ -77,116 +77,6 @@ class _MyHomePageState extends State<MyHomePage>
           AllCoinsScreen(cryptoService: widget.cryptoService), // AllCoinsScreen 설정
           FavoriteStocksScreen(cryptoService: widget.cryptoService), // FavoriteStocksScreen 설정
         ],
-      ),
-    );
-  }
-}
-
-class SearchCoins extends StatefulWidget {
-  final CryptoService cryptoService;
-
-  const SearchCoins({super.key, required this.cryptoService});
-
-  @override
-  _SearchCoinsState createState() => _SearchCoinsState();
-}
-
-class _SearchCoinsState extends State<SearchCoins> {
-  List<Map<String, dynamic>> coins = [];
-  String searchText = '';
-
-  @override
-  void initState() {
-    super.initState();
-    _loadInitialCoins();
-  }
-
-  Future<void> _loadInitialCoins() async {
-    try {
-      final initialCoins = await widget.cryptoService.fetchAllCoins();
-      setState(() {
-        coins = initialCoins.map((coin) {
-          return {
-            'symbol': coin['symbol'],
-            'price': double.parse(coin['price']),
-          };
-        }).toList();
-      });
-    } catch (e) {
-      print('Failed to load initial coins: $e');
-    }
-  }
-
-  void cardClickEvent(BuildContext context, String symbol, double price) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ContentPage(content: '$symbol: $price'),
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: TextField(
-            decoration: const InputDecoration(
-              hintText: '검색어를 입력해주세요.',
-              border: OutlineInputBorder(),
-            ),
-            onChanged: (value) {
-              setState(() {
-                searchText = value;
-              });
-            },
-          ),
-        ),
-        Expanded(
-          child: ListView.builder(
-            itemCount: coins.length,
-            itemBuilder: (BuildContext context, int index) {
-              final coin = coins[index];
-              if (searchText.isNotEmpty &&
-                  !coin['symbol']
-                      .toLowerCase()
-                      .contains(searchText.toLowerCase())) {
-                return const SizedBox.shrink();
-              } else {
-                return Card(
-                  elevation: 3,
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.elliptical(20, 20))),
-                  child: ListTile(
-                    title: Text(coin['symbol']),
-                    trailing: Text(coin['price'].toString()),
-                    onTap: () => cardClickEvent(context, coin['symbol'], coin['price']),
-                  ),
-                );
-              }
-            },
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class ContentPage extends StatelessWidget {
-  final String content;
-
-  const ContentPage({super.key, required this.content});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Content'),
-      ),
-      body: Center(
-        child: Text(content),
       ),
     );
   }
