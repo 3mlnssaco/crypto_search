@@ -1,6 +1,5 @@
 plugins {
     id "com.android.application"
-    id 'com.google.gms.google-services' // FlutterFire Configuration
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin" // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
 }
@@ -34,7 +33,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.yourname.finalTest" // 또는 "com.daniel.final_test"로 변경
+        applicationId "com.daniel.final_test" // Ensure this matches your applicationId
         minSdkVersion 16
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
@@ -55,9 +54,5 @@ flutter {
 }
 
 dependencies {
-    implementation 'com.google.firebase:firebase-analytics:18.0.2'
-    // 필요한 경우 다른 종속성 추가
+    // Add other dependencies if necessary
 }
-
-// Apply the Google Services plugin
-apply plugin: 'com.google.gms.google-services'
