@@ -9,7 +9,7 @@ class CryptoService {
   final String _secretKey = const String.fromEnvironment('BINANCE_SECRET_KEY');
 
   // Initialization method
-  void initialize() {
+  Future<void> initialize() async {
     // Print the API key and secret key loaded from environment variables
     print('API Key: $_apiKey');
     print('Secret Key: $_secretKey');
