@@ -1,14 +1,28 @@
 import 'dart:convert'; // JSON encoding and decoding
-import 'package:flutter/services.dart' show rootBundle; // For loading resources
-import 'package:http/http.dart' as http; // For HTTP requests
+import 'package:http/http.dart' as http; // HTTP requests
 
 class CryptoService {
   List<Map<String, dynamic>> favoriteCoins = []; // List to store favorite coins
 
+  // Read API key from environment variables
+  final String _apiKey = const String.fromEnvironment('BINANCE_API_KEY');
+  final String _secretKey = const String.fromEnvironment('BINANCE_SECRET_KEY');
+
+  // Initialization method
+  void initialize() {
+    // Print the API key and secret key loaded from environment variables
+    print('API Key: $_apiKey');
+    print('Secret Key: $_secretKey');
+  }
+
   // Method to fetch all coins
   Future<List<dynamic>> fetchAllCoins() async {
-    final response = await http.get(Uri.parse(
-        'https://api.binance.com/api/v3/ticker/price')); // Fetch coin data from Binance API
+    final response = await http.get(
+      Uri.parse('https://api.binance.com/api/v3/ticker/price'),
+      headers: {
+        'X-MBX-APIKEY': _apiKey,
+      },
+    ); // Fetch coin data from Binance API
 
     if (response.statusCode == 200) {
       List<dynamic> coins = jsonDecode(response.body); // Decode the JSON response
@@ -32,38 +46,5 @@ class CryptoService {
   // Method to get favorite coins
   List<Map<String, dynamic>> getFavoriteCoins() {
     return favoriteCoins; // Return the list of favorite coins
-  }
-
-  // Method to load the API key
-  static Future<String> loadApiKey() async {
-    try {
-      final jsonStr = await rootBundle.loadString(
-          'assets/config.json'); // Load API key from config.json
-      final jsonMap = jsonDecode(jsonStr); // Decode the JSON
-      return jsonMap['BINANCE_API_KEY'] ??
-          (throw Exception('API key not found')); // Return the API key or throw an exception
-    } catch (e) {
-      throw Exception('Failed to load API key: $e'); // Throw an exception if loading failed
-    }
-  }
-
-  // Method to load the secret key
-  static Future<String> loadSecretKey() async {
-    try {
-      final jsonStr = await rootBundle.loadString(
-          'assets/config.json'); // Load secret key from config.json
-      final jsonMap = jsonDecode(jsonStr); // Decode the JSON
-      return jsonMap['BINANCE_SECRET_KEY'] ??
-          (throw Exception('Secret key not found')); // Return the secret key or throw an exception
-    } catch (e) {
-      throw Exception('Failed to load secret key: $e'); // Throw an exception if loading failed
-    }
-  }
-
-  // Initialization method
-  Future<void> initialize() async {
-    final apiKey = await loadApiKey(); // Load the API key
-    final secretKey = await loadSecretKey(); // Load the secret key
-    // Use the loaded keys
   }
 }
