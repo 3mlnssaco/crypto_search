@@ -1,60 +1,31 @@
 plugins {
-    id "com.android.application"
-    id "kotlin-android"
-    id "dev.flutter.flutter-gradle-plugin" // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
-}
-
-def localProperties = new Properties()
-def localPropertiesFile = rootProject.file("local.properties")
-if (localPropertiesFile.exists()) {
-    localPropertiesFile.withReader("UTF-8") { reader ->
-        localProperties.load(reader)
-    }
-}
-
-def flutterVersionCode = localProperties.getProperty("flutter.versionCode")
-if (flutterVersionCode == null) {
-    flutterVersionCode = "1"
-}
-
-def flutterVersionName = localProperties.getProperty("flutter.versionName")
-if (flutterVersionName == null) {
-    flutterVersionName = "1.0"
+    id 'com.android.application'
+    id 'kotlin-android'
 }
 
 android {
-    namespace = "com.example.final_test"
-    compileSdkVersion 33 // Updated to 33
-    ndkVersion = "21.1.6352462" // specify the correct ndkVersion if needed
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
+    compileSdkVersion 31 // Update to the latest version
     defaultConfig {
-        applicationId "com.daniel.final_test" // Ensure this matches your applicationId
+        applicationId "com.example.myapp"
         minSdkVersion 16
-        targetSdkVersion 33 // Updated to 33
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
+        targetSdkVersion 31 // Update to the latest version
+        versionCode 1
+        versionName "1.0"
     }
 
     buildTypes {
         release {
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.debug // TODO: Add your own signing config for the release build.
         }
     }
 }
 
-flutter {
-    source = "../.."
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.4.0'
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.2'
 }
 
-dependencies {
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.72' // Ensure Kotlin standard library is included
-    // Add other dependencies if necessary
-}
