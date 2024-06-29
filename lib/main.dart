@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart'; // Flutter의 UI 요소를 위한 패키지
 import 'crypto_service.dart'; // CryptoService 클래스를 가져오기 위한 패키지
-import 'all_coins.dart'; // SearchCoinScreen 클래스를 가져오기 위한 패키지
+import 'all_coins.dart'; // AllCoinsScreen 클래스를 가져오기 위한 패키지
 import 'favorite_stocks_screen.dart'; // FavoriteStocksScreen 클래스를 가져오기 위한 패키지
-import 'search_coins.dart'; // PreferencesScreen 클래스를 가져오기 위한 패키지
+import 'search_coins.dart'; // SearchCoins 클래스를 가져오기 위한 패키지
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Flutter 위젯 바인딩 초기화
@@ -74,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage>
         controller: _tabController, // TabController 설정
         children: [
           SearchCoins(cryptoService: widget.cryptoService),
-          AllCoinsScreen(cryptoService: widget.cryptoService), // SearchCoinScreen 설정
+          AllCoinsScreen(cryptoService: widget.cryptoService), // AllCoinsScreen 설정
           FavoriteStocksScreen(cryptoService: widget.cryptoService), // FavoriteStocksScreen 설정
         ],
       ),
