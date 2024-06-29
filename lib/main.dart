@@ -7,7 +7,7 @@ import 'search_coins.dart'; // SearchCoins 클래스를 가져오기 위한 패�
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Flutter 위젯 바인딩 초기화
   final cryptoService = CryptoService(); // CryptoService 인스턴스 생성
-  await cryptoService.initialize(); // CryptoService 초기화
+  cryptoService.initialize(); // CryptoService 초기화
   runApp(MyApp(cryptoService: cryptoService)); // MyApp 실행
 }
 
@@ -74,10 +74,8 @@ class _MyHomePageState extends State<MyHomePage>
         controller: _tabController, // TabController 설정
         children: [
           SearchCoins(cryptoService: widget.cryptoService),
-          SearchCoinScreen(
-              cryptoService: widget.cryptoService), // SearchCoinScreen 설정
-          FavoriteStocksScreen(
-              cryptoService: widget.cryptoService), // FavoriteStocksScreen 설정
+          SearchCoinScreen(cryptoService: widget.cryptoService), // SearchCoinScreen 설정
+          FavoriteStocksScreen(cryptoService: widget.cryptoService), // FavoriteStocksScreen 설정
         ],
       ),
     );
