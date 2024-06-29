@@ -7,7 +7,7 @@ import 'search_coins.dart'; // SearchCoins 클래스를 가져오기 위한 패�
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Flutter 위젯 바인딩 초기화
   final cryptoService = CryptoService(); // CryptoService 인스턴스 생성
-  cryptoService.initialize(); // CryptoService 초기화
+  await cryptoService.initialize(); // CryptoService 초기화
   runApp(MyApp(cryptoService: cryptoService)); // MyApp 실행
 }
 
