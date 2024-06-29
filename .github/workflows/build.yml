@@ -1,15 +1,11 @@
 name: Build web/android/windows apps
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "master" ]
 
 jobs:
   build_windows_app:
     runs-on: windows-latest
-
-    env:
-      BINANCE_API_KEY: ${{ secrets.BINANCE_API_KEY }}
-      BINANCE_SECRET_KEY: ${{ secrets.BINANCE_SECRET_KEY }}
 
     steps:
       - uses: actions/checkout@v3
@@ -41,10 +37,6 @@ jobs:
   build_web_and_android_app:
     needs: build_windows_app
     runs-on: ubuntu-latest
-
-    env:
-      BINANCE_API_KEY: ${{ secrets.BINANCE_API_KEY }}
-      BINANCE_SECRET_KEY: ${{ secrets.BINANCE_SECRET_KEY }}
 
     steps:
       - uses: actions/checkout@v3
