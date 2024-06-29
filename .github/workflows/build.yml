@@ -65,7 +65,7 @@ jobs:
       - run: git commit -m "Automatic deployment by github-actions"
       - run: git push origin HEAD:gh-pages --force
 
-      - run: flutter build apk --release
+      - run: flutter build apk --release --verbose # Add verbose flag for more details
       - run: mkdir build/app/outputs/flutter-apk/result
       - run: mv build/app/outputs/flutter-apk/app-*.apk build/app/outputs/flutter-apk/result/${{ github.event.repository.name }}.apk
       - run: git --work-tree build/app/outputs/flutter-apk/result add --all
